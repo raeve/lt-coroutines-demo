@@ -1,5 +1,5 @@
 package xyz.raeve
 
-class MainUseCase: MainService {
-  override fun requestData(): List<PicsumPhoto> = emptyList()
+class MainUseCase(private val repository: MainRepository) : MainService {
+  override fun requestData(): List<PicsumPhoto> = repository.getPhotos()
 }
