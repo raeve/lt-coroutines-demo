@@ -16,6 +16,10 @@ android {
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
 
+  kotlinOptions {
+    jvmTarget = '1.8'
+  }
+
   buildTypes {
     release {
       minifyEnabled false
@@ -23,6 +27,10 @@ android {
     }
   }
 
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
 
 dependencies {
@@ -44,6 +52,10 @@ dependencies {
   implementation 'com.squareup.retrofit2:retrofit:2.7.2'
   implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
   implementation "com.squareup.okhttp3:logging-interceptor:4.3.1"
+  implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0"
+
+  // Image processing
+  implementation 'io.coil-kt:coil:0.9.5'
 
   testImplementation 'junit:junit:4.12'
   androidTestImplementation 'androidx.test.ext:junit:1.1.1'

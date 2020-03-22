@@ -1,5 +1,10 @@
 package xyz.raeve
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
+
 interface MainView {
   fun showLoading()
   fun hideLoading()
@@ -7,7 +12,7 @@ interface MainView {
 }
 
 interface MainService {
-  fun requestData(): List<PicsumPhoto>
+  fun requestData(): Observable<List<PicsumPhoto>>
 
   companion object {
     fun create(): MainService = MainUseCase()
@@ -15,15 +20,15 @@ interface MainService {
 }
 
 class MainPresenter(private val view: MainView, private val service: MainService = MainService.create()) {
-
   fun retrieveData() {
-    // 1 step show loading
     view.showLoading()
-    // 2 step request data
-    val photoList = service.requestData()
-    // 3 step hide loading
-    view.hideLoading()
-    // 4 step show data
-    view.showPhotos(photoList)
+    CompositeDisposable().add(
+      service.requestData()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.newThread())
+        .subscribe {
+          view.hideLoading()
+          view.showPhotos(it)
+        })
   }
 }
