@@ -3,11 +3,11 @@ package xyz.raeve
 interface MainView {
   fun showLoading()
   fun hideLoading()
-  fun showData(data: String)
+  fun showPhotos(list: List<PicsumPhoto>)
 }
 
 interface MainService {
-  fun requestData(): String
+  fun requestData(): List<PicsumPhoto>
 
   companion object {
     fun create(): MainService = MainUseCase()
@@ -20,10 +20,10 @@ class MainPresenter(private val view: MainView, private val service: MainService
     // 1 step show loading
     view.showLoading()
     // 2 step request data
-    val data = service.requestData()
+    val photoList = service.requestData()
     // 3 step hide loading
     view.hideLoading()
     // 4 step show data
-    view.showData(data)
+    view.showPhotos(photoList)
   }
 }
