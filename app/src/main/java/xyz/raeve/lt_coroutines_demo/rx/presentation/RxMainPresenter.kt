@@ -19,10 +19,10 @@ class RxMainPresenter(private val view: MainView, private val service: RxMainSer
       service.requestData()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribeOn(Schedulers.newThread())
-        .subscribe {
+        .subscribe {photos ->
           view.hideLoading()
           view.showMillis(Calendar.getInstance().timeInMillis - beforeMillis)
-          view.showPhotos(it)
+          view.showPhotos(photos)
         }
     )
   }
