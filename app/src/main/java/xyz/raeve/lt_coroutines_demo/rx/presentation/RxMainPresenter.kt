@@ -1,26 +1,15 @@
-package xyz.raeve
+package xyz.raeve.lt_coroutines_demo.rx.presentation
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import xyz.raeve.lt_coroutines_demo.MainView
+import xyz.raeve.lt_coroutines_demo.Presenter
+import xyz.raeve.lt_coroutines_demo.rx.domain.RxMainService
 
-interface MainView {
-  fun showLoading()
-  fun hideLoading()
-  fun showPhotos(list: List<PicsumPhoto>)
-}
+class RxMainPresenter(private val view: MainView, private val service: RxMainService = RxMainService.create()): Presenter {
 
-interface MainService {
-  fun requestData(): Observable<List<PicsumPhoto>>
-
-  companion object {
-    fun create(): MainService = MainUseCase()
-  }
-}
-
-class MainPresenter(private val view: MainView, private val service: MainService = MainService.create()) {
-  fun retrieveData() {
+  override fun retrieveData() {
     view.showLoading()
     CompositeDisposable().add(
       service.requestData()

@@ -1,18 +1,18 @@
-package xyz.raeve
+package xyz.raeve.lt_coroutines_demo
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import xyz.raeve.lt_coroutines_demo.rx.presentation.RxMainPresenter
 
 class MainActivity : AppCompatActivity(), MainView {
 
-  private val presenter: MainPresenter by lazy {
-    MainPresenter(this)
+  private val presenter: Presenter by lazy {
+    RxMainPresenter(this)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package xyz.raeve
+package xyz.raeve.lt_coroutines_demo
 
 import com.google.gson.annotations.SerializedName
 

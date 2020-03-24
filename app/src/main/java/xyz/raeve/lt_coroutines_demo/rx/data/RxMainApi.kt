@@ -1,4 +1,4 @@
-package xyz.raeve
+package xyz.raeve.lt_coroutines_demo.rx.data
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import io.reactivex.rxjava3.core.Observable
@@ -7,14 +7,15 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import xyz.raeve.lt_coroutines_demo.PicsumPhoto
 import java.util.concurrent.TimeUnit
 
-interface MainApi {
+interface RxMainApi {
   @GET("/v2/list")
   fun getPhotos(): Observable<List<PicsumPhoto>>
 
   companion object {
-    fun create(): MainApi {
+    fun create(): RxMainApi {
 
       val client = OkHttpClient.Builder()
         .addInterceptor(
@@ -33,7 +34,7 @@ interface MainApi {
         .baseUrl("https://picsum.photos")
         .client(client)
         .build()
-      return retrofit.create(MainApi::class.java)
+      return retrofit.create(RxMainApi::class.java)
     }
   }
 }
