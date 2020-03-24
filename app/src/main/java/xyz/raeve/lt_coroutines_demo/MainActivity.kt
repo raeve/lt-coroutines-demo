@@ -4,15 +4,21 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import xyz.raeve.lt_coroutines_demo.co.presentation.CoMainPresenter
 import xyz.raeve.lt_coroutines_demo.rx.presentation.RxMainPresenter
 
 class MainActivity : AppCompatActivity(), MainView {
 
-  private val presenter: Presenter by lazy {
+  private val rxPresenter: Presenter by lazy {
     RxMainPresenter(this)
+  }
+
+  private val coPresenter: Presenter by lazy {
+    CoMainPresenter(this)
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +36,15 @@ class MainActivity : AppCompatActivity(), MainView {
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    if (item.itemId == R.id.menuRefresh) presenter.retrieveData()
+    when (item.itemId) {
+      R.id.menuRefresh -> {
+        coPresenter.clear()
+        rxPresenter.clear()
+        clearPhotos()
+      }
+      R.id.menuCo -> coPresenter.retrieveData()
+      R.id.menuRx -> rxPresenter.retrieveData()
+    }
     return super.onOptionsItemSelected(item)
   }
 
@@ -45,6 +59,17 @@ class MainActivity : AppCompatActivity(), MainView {
   override fun showPhotos(list: List<PicsumPhoto>) {
     (recyclerView.adapter as? MainAdapter)?.let {
       it.list = list
+      it.notifyDataSetChanged()
+    }
+  }
+
+  override fun showMillis(millis: Long) {
+    Toast.makeText(this, "Duration: $millis ms", Toast.LENGTH_SHORT).show()
+  }
+
+  private fun clearPhotos() {
+    (recyclerView.adapter as? MainAdapter)?.let {
+      it.list = emptyList()
       it.notifyDataSetChanged()
     }
   }
